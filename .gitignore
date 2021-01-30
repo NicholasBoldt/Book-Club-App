@@ -1,3 +1,12 @@
 __pycache__/
 .env
 main_app/__pycache__/
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+.env
