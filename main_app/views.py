@@ -7,4 +7,4 @@ def home(request):
 
 def clubs_index(request):
   clubs = Club.objects.all()
-  return render(request, 'clubs/index.html', { 'clubs': clubs })
+  return render(request, 'myclubs/index.html', { 'clubs': clubs })
