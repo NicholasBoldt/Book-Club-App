@@ -25,11 +25,11 @@ class Discussion(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
 
 class Book(models.Model):
-    title = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
-    desc = models.TextField(max_length=1000)
+    title = models.CharField(max_length=500)
+    author = models.CharField(max_length=500)
+    desc = models.TextField(max_length=5000)
     isbn = models.IntegerField()
-    image = models.CharField(max_length=100)
+    image = models.CharField(max_length=1000)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     # ratings = models.ForeignKey(Rating, on_delete=models.CASCADE)
 
