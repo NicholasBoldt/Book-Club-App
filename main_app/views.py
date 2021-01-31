@@ -56,7 +56,7 @@ def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of
 
 def search_title_author(search_title, search_author): # searches title and author keywords to return a list of isbns, then uses search_isbn to return a list of objects containing book, author, isbn, desc, and image
     MAX = 5 #maximum titles to return
-    isbn = [0]
+    isbn = []
     my_key = os.environ['GOOGLE_BOOKS_API_KEY']
     r = requests.get('https://www.googleapis.com/books/v1/volumes?q=' + search_title + '+inauthor:' + search_author +'&maxResults=' + str(MAX) + '&orderBy=relevance&printType=BOOKS&key=' + my_key).json()
     if r['totalItems'] < MAX:
@@ -66,6 +66,8 @@ def search_title_author(search_title, search_author): # searches title and autho
             num = r['items'][x]['volumeInfo']['industryIdentifiers'][0]['identifier']
             if num.isnumeric(): # filters out non-ISBN identifiers, which contain letter codes
                 isbn.append(num)
+    if len(isbn) == 0:
+        isbn = [0]            
 
     books = search_isbn(isbn)
 
