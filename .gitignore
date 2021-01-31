@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 __pycache__/
 .env
 main_app/__pycache__/
+=======
+
+>>>>>>> 78e6f94b370fba9cca9fc553967e10d7de2c6fc3
 # Django #
 *.log
 *.pot
