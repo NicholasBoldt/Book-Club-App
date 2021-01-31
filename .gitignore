@@ -1,6 +1,4 @@
-__pycache__/
-.env
-main_app/__pycache__/
+
 # Django #
 *.log
 *.pot

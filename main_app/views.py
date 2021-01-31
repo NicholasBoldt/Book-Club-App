@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 import requests 
 import os 
 from .models import Book, Rec
+from .models import Club
 
 # Create your views here.
 def home(request):
     print("Working")
-
+    
 def select_book(request):
     books = None
     if request.GET: # isbn search
@@ -54,7 +55,7 @@ def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of
             })
     return books
 
-def search_title_author(search_title, search_author): # searches title and author keywords to return a list of isbns, then uses search_isbn to return a list of objects containing book, author, isbn, desc, and image
+ def search_title_author(search_title, search_author): # searches title and author keywords to return a list of isbns, then uses search_isbn to return a list of objects containing book, author, isbn, desc, and image
     MAX = 5 #maximum titles to return
     isbn = []
     my_key = os.environ['GOOGLE_BOOKS_API_KEY']
@@ -76,3 +77,7 @@ def search_title_author(search_title, search_author): # searches title and autho
 # Some test ISBNs:
 # 9781609618957
 # 9780140441185
+
+def clubs_index(request):
+  clubs = Club.objects.all()
+  return render(request, 'myclubs/index.html', { 'clubs': clubs })
