@@ -71,7 +71,6 @@ def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of
         isbn = [0]            
 
     books = search_isbn(isbn)
-
     return books
 
 # Some test ISBNs:
