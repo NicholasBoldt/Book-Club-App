@@ -55,7 +55,7 @@ def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of
             })
     return books
 
- def search_title_author(search_title, search_author): # searches title and author keywords to return a list of isbns, then uses search_isbn to return a list of objects containing book, author, isbn, desc, and image
+def search_title_author(search_title, search_author): # searches title and author keywords to return a list of isbns, then uses search_isbn to return a list of objects containing book, author, isbn, desc, and
     MAX = 5 #maximum titles to return
     isbn = []
     my_key = os.environ['GOOGLE_BOOKS_API_KEY']
