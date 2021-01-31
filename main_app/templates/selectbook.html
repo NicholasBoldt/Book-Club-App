@@ -11,28 +11,29 @@
     <input type="submit" value="Search" class="btn">
 </form>
 
-
-{% if book %}
+{% for book in books%}
     {% if book.error %}
         <p>{{ book.error }}</p>
     {% else %}    
         <h1>{{ book.title }}</h1>
-        <p>ISBN: {{ book.isbn }}</p>
         <p>Author: {{ book.author }}</p>
         {% if book.image_link %}
             <img src="{{book.image_link}}">
         {% else %}
-            <div style="width:200px; height:300px; background-color:rgb(214, 214, 214); text-align: center; padding-top: 40px"><p>{{ book.title }}</p> by {{ book.author}}</div> -->
+            <div style="width:200px; height:300px; background-color:rgb(214, 214, 214); text-align: center; padding-top: 40px"><p>{{ book.title }}</p> by {{ book.author}}</div>
         {% endif %}
+        <p>{{ book.desc }}</p>
         <p>
-            <form action="" method="POST">
-            <input type="hidden" name="title" value="book.title">
-            <input type="hidden" name="isbn" value="book.isbn">
-            <input type="hidden" name="author" value="book.author">
-            <input type="hidden" name="image_link" value="book.image_link">
-            <input type="submit" value="Add to Recommendations" class="btn" name="add_to_rec">
+            <form action="/selectbook/" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="title" value="{{ book.title }}">
+                <input type="hidden" name="isbn" value="{{ book.isbn }}">
+                <input type="hidden" name="author" value="{{ book.author }}">
+                <input type="hidden" name="image_link" value="{{ book.image_link }}">
+                <input type="hidden" name="desc" value="{{ book.desc }}">
+                <input type="submit" value="Add to Recommendations" class="btn" name="add_to_rec">
             </form>
         </p>
     {% endif %}
-{% endif %}
+{% endfor %}
 
