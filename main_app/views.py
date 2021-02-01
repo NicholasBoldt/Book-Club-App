@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 import requests 
 import os 
 from .models import Book, Rec
@@ -31,7 +32,7 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
     
-def select_book(request):
+def select_book(request, club_id):
     books = None
     if request.GET: # isbn search
         if 'isbn' in request.GET:
@@ -40,18 +41,23 @@ def select_book(request):
         elif 'search_title' in request.GET: # author/title search
             books = search_title_author(request.GET['search_title'], request.GET['search_author'])
     elif request.POST: # add selected title to database
-        print(request.POST)
-        print(request.POST['title'])
+        # print('Title: ', request.POST['title'], "\n Author: ", request.POST['author'], "\n Description: ",request.POST['desc'], "\n ISBN: ", request.POST['isbn'], "\n Image: ", request.POST['image_link'])
         new_book = Book(
             title=request.POST['title'],
             author=request.POST['author'],
             desc=request.POST['desc'],
             isbn=request.POST['isbn'],
             image=request.POST['image_link'],
+            club=Club.objects.get(id=club_id)
             )
-        # new_book.save()
+        new_book.save()
         books = None
-    return render(request, 'selectbook.html', { 'books' : books})
+        club = Club.objects.get(id=club_id)
+        rec_list = club.book_set.all()
+        print("THIS WORKS")
+        # return redirect(request, '/clubs/' +str(club_id) +'/recommendations')
+        # return redirect(request, 'index')
+    return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
 
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
@@ -100,8 +106,12 @@ def search_title_author(search_title, search_author): # searches title and autho
 # 9781609618957
 # 9780140441185
 
+def recommendations(request, club_id):
+    return render(request, 'recommendations.html')
+
 def clubs_index(request):
     clubs = Club.objects.all()
+    print(clubs.__dict__)
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
 def club(request, club_id):
