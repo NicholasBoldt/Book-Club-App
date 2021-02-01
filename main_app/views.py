@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import requests 
 import os 
 from .models import Book, Rec
-from .models import Club
+from .models import Club, Meeting
 
 # Create your views here.
 def home(request):
@@ -78,5 +78,14 @@ def search_title_author(search_title, search_author): # searches title and autho
 # 9780140441185
 
 def clubs_index(request):
-  clubs = Club.objects.all()
-  return render(request, 'myclubs/index.html', { 'clubs': clubs })
+    clubs = Club.objects.all()
+    return render(request, 'myclubs/index.html', { 'clubs': clubs })
+
+def club(request, club_id):
+    club = Club.objects.get(id=club_id)
+    return render(request, 'myclubs/club.html', { 'club': club})
+
+def meeting(request, club_id, meeting_id):
+    club = Club.objects.get(id=club_id)
+    meeting = Meeting.objects.get(id=meeting_id)
+    return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting})
