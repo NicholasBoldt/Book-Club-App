@@ -3,10 +3,33 @@ import requests
 import os 
 from .models import Book, Rec
 from .models import Club, Meeting
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Book, Rec, User
+from .models import Club
+
 
 # Create your views here.
 def home(request):
-    print("Working")
+    form = AuthenticationForm
+    return render(request, 'landing.html', {'form': form})
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    class form(UserCreationForm):
+        class Meta:
+            model = User
+            fields = ('username', 'email', 'password1', 'password2')
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)
     
 def select_book(request):
     books = None

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if club %}
 
 <h1>Club List</h1>
 
@@ -16,4 +17,22 @@
     </div>
   </a>
 
+{% else %}
+
+<h2>Account Created</h2>
+
+<!-- checkmark image -->
+
+<h3>Get Started</h3>
+<h3>Create a Book Club</h3>
+<p>or</p>
+<p>Join a Book Club</p>
+
+<form action="">
+    Invite Code:
+    <input type="text" name="invite_code" label="Invite Code">
+    <input type="submit" class="btn" value="->">
+</form>
+
+{% endif %}
 {% endblock %}
