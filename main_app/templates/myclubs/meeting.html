@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div> 
+    <h5 class="center-align">{{ club.club_name }}</h5>
+    <p class="valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
+</div>
+<hr/>
+<div class="row">
+    <div class="col s4">BOOK IMG</div>
+    <div class="col s8">
+        CURRENT BOOK TITLE <br>
+        Club Rating RATING<br>
+        Your Rating RATING<br>
+    </div>
+</div>
+<div>This is a placeholder for the current book description</div>
+<br>
+<div class="center-align">
+    <button class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></button>
+</div>
+
+<hr/>
+Upcoming Meeting
+<hr/>
+<p>Date and Time: {{ meeting.date }}</p>
+<p>Meeting Locations: {{ meeting.location }} </p>
+<p>Meeting Link: {{ meeting.meeting_link }}</p>
+<p>Agenda: {{ meeting.chapters }}</p>
+
+<hr/>
+Book Suggestions
+<hr>
+<div class="center-align">
+    <button class="btn">Recommend a Book</button>
+</div>
+<p class="valign-wrapper">View All<i class="material-icons">keyboard_arrow_right</i></p>
+
+<hr/>
+Next Book
+<hr>
+<div class="center-align">
+    <button class="btn">Start a Poll</button>
+</div>
+
+
+
+
+{% endblock %}
