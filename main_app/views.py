@@ -30,6 +30,8 @@ def signup(request):
             fields = ('username', 'email', 'password1', 'password2')
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
     
 def select_book(request):
     books = None
