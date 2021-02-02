@@ -27,7 +27,7 @@
         {% endif %}
         <p>{{ book.desc }}</p>
         <p>
-            <form action="/selectbook/" method="POST">
+            <form action="/clubs/{{ club_id }}/selectbook/" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="title" value="{{ book.title }}">
                 <input type="hidden" name="isbn" value="{{ book.isbn }}">
