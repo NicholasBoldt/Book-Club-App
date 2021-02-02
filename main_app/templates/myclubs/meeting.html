@@ -4,7 +4,7 @@
 
 <div> 
     <h5 class="center-align">{{ club.club_name }}</h5>
-    <p class="valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
+    <p class="members valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
 </div>
 <hr/>
 <div class="row">
@@ -21,24 +21,26 @@
     <button class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></button>
 </div>
 
+
 <hr/>
-Upcoming Meeting
+<h6 class="center-align">Upcoming Meeting</h6>
 <hr/>
 <p>Date and Time: {{ meeting.date }}</p>
 <p>Meeting Locations: {{ meeting.location }} </p>
 <p>Meeting Link: {{ meeting.meeting_link }}</p>
 <p>Agenda: {{ meeting.chapters }}</p>
-
+<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i>Schedule a Meeting</p>
 <hr/>
-Book Suggestions
+<h6 class="center-align">Book Suggestions</h6>
 <hr>
 <div class="center-align">
     <button class="btn">Recommend a Book</button>
 </div>
+<div class="row"></div>
 <p class="valign-wrapper">View All<i class="material-icons">keyboard_arrow_right</i></p>
 
 <hr/>
-Next Book
+<h6 class="center-align">Next Book</h6>
 <hr>
 <div class="center-align">
     <button class="btn">Start a Poll</button>

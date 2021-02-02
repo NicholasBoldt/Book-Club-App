@@ -12,8 +12,7 @@ class Book(models.Model):
     desc = models.TextField(max_length=5000)
     isbn = models.IntegerField()
     image = models.CharField(max_length=1000)
-    # meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-    # ratings = models.ForeignKey(Rating, on_delete=models.CASCADE)
+ 
 
 class Meeting(models.Model):
     date = models.DateField()
@@ -21,20 +20,19 @@ class Meeting(models.Model):
     location = models.CharField(max_length=100)
     chapters = models.CharField(max_length=100, default='All')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
-    book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
+    book = models.IntegerField()
 
 class Discussion(models.Model):
     COMMENT_TYPES = (
             ('comment', 'Comment'),
-            ('quesiton', 'Discussion Quesion'),
+            ('quesiton', 'Discussion Question'),
             ('quote', 'Quote')
     )
 
     disc_type =  models.CharField(max_length=100, choices=COMMENT_TYPES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
-
-
+    comment = models.TextField(max_length=10000)
 
 class Rec(models.Model):
     votes = models.IntegerField()
@@ -45,7 +43,7 @@ class Rec(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    # book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
 
 
