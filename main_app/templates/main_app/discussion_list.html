@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Discussion</h1>
+
+    {% for d in discussion_list%}
+        <div class="card">
+            <div class="card-content">
+                <p>{{ d.user.first_name }}</p>
+                <p>{{ d.comment }}</p>
+                
+                <form action="vote/" method="POST">
+                    <input type="submit" value="Vote for this book" class="btn">
+                </form> 
+            </div>
+        </div>
+    {% endfor%}
+
+{% endblock%}

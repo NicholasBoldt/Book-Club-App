@@ -26,13 +26,15 @@ class Meeting(models.Model):
 class Discussion(models.Model):
     COMMENT_TYPES = (
             ('comment', 'Comment'),
-            ('quesiton', 'Discussion Quesion'),
+            ('quesiton', 'Discussion Question'),
             ('quote', 'Quote')
     )
 
     disc_type =  models.CharField(max_length=100, choices=COMMENT_TYPES)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=10000)
+
 
 class Rec(models.Model):
     votes = models.IntegerField()

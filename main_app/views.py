@@ -6,8 +6,9 @@ from .models import Book, Rec
 from .models import Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Book, Rec, User
+from .models import Book, Rec, User, Discussion
 from .models import Club
+from django.views.generic import ListView, CreateView
 
 
 # Create your views here.
@@ -55,7 +56,6 @@ def select_book(request, club_id):
         books = None
         club = Club.objects.get(id=club_id)
         rec_list = club.book_set.all()
-        print("THIS WORKS")
         return redirect('/clubs/' + str(club_id) +'/recommendations')
     
     # return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
@@ -107,8 +107,30 @@ def search_title_author(search_title, search_author): # searches title and autho
 # 9781609618957
 # 9780140441185
 
-def recommendations(request, club_id):
-    return render(request, 'recommendations.html')
+# def add_comment(request, club_id, meeting_id)
+#     return render(request, 'addcomment.html', meeting_id)
+
+def add_comment(request, club_id, meeting_id):
+    user = request.user.id
+    print('User:::', user)
+    if request.method == 'GET':
+        return render(request, 'addcomment.html', {'user':user, 'meeting' : meeting_id})
+    elif request.method == 'POST':
+        print('User id: ', user, "type:", type(user))
+        new_comment = Discussion(
+            disc_type = request.POST['disc_type'],
+            user = User.objects.get(id=user),
+            meeting = Meeting.objects.get(id=request.POST['meeting']),
+            comment = request.POST['comment'],
+        )
+        new_comment.save()
+        return redirect('/clubs/' + str(club_id) + '/' + str(meeting_id))
+
+class DiscussionList(ListView):
+    model = Discussion
+
+class RecList(ListView):
+    model = Book
 
 def clubs_index(request):
     clubs = Club.objects.all()
