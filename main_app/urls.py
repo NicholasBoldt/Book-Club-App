@@ -15,4 +15,6 @@ urlpatterns = [
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/discussion/add/', views.add_comment, name='addcomment'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', views.signup, name='signup'),
+    path('clubs/create/', views.ClubCreate.as_view(), name='clubs_create'),
+
 ]
