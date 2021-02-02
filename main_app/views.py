@@ -9,7 +9,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book, Rec, User, Discussion
 from .models import Club
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
+
 
 
 
@@ -116,7 +117,6 @@ def search_title_author(search_title, search_author): # searches title and autho
 
 def add_comment(request, club_id, meeting_id):
     user = request.user.id
-    print('User:::', user)
     if request.method == 'GET':
         return render(request, 'addcomment.html', {'user':user, 'meeting' : meeting_id})
     elif request.method == 'POST':
@@ -128,13 +128,17 @@ def add_comment(request, club_id, meeting_id):
             comment = request.POST['comment'],
         )
         new_comment.save()
-        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id))
+        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
 
 class DiscussionList(ListView):
     model = Discussion
 
 class RecList(ListView):
     model = Book
+
+class UserProfile(DetailView):
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email']
 
 def clubs_index(request):
     clubs = Club.objects.all()
