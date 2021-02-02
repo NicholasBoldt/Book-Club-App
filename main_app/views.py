@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 import requests 
 import os 
 from .models import Book, Rec
 from .models import Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Book, Rec, User
+from .models import Book, Rec, User, Discussion
 from .models import Club
 from django.views.generic.edit import CreateView
+from django.views.generic import ListView, CreateView
+
 
 
 # Create your views here.
@@ -31,28 +34,35 @@ def signup(request):
             fields = ('username', 'email', 'password1', 'password2')
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
     
-def select_book(request):
+def select_book(request, club_id):
     books = None
-    if request.GET: # isbn search
+    if request.method == 'GET': # isbn search
         if 'isbn' in request.GET:
             isbn = [request.GET['isbn']]
             books = search_isbn(isbn)
         elif 'search_title' in request.GET: # author/title search
             books = search_title_author(request.GET['search_title'], request.GET['search_author'])
-    elif request.POST: # add selected title to database
-        print(request.POST)
-        print(request.POST['title'])
+        return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
+    elif request.method == 'POST': # add selected title to database
+        # print('Title: ', request.POST['title'], "\n Author: ", request.POST['author'], "\n Description: ",request.POST['desc'], "\n ISBN: ", request.POST['isbn'], "\n Image: ", request.POST['image_link'])
         new_book = Book(
             title=request.POST['title'],
             author=request.POST['author'],
             desc=request.POST['desc'],
             isbn=request.POST['isbn'],
             image=request.POST['image_link'],
+            club=Club.objects.get(id=club_id)
             )
-        # new_book.save()
+        new_book.save()
         books = None
-    return render(request, 'selectbook.html', { 'books' : books})
+        club = Club.objects.get(id=club_id)
+        rec_list = club.book_set.all()
+        return redirect('/clubs/' + str(club_id) +'/recommendations')
+    
+    # return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
 
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
@@ -101,8 +111,34 @@ def search_title_author(search_title, search_author): # searches title and autho
 # 9781609618957
 # 9780140441185
 
+# def add_comment(request, club_id, meeting_id)
+#     return render(request, 'addcomment.html', meeting_id)
+
+def add_comment(request, club_id, meeting_id):
+    user = request.user.id
+    print('User:::', user)
+    if request.method == 'GET':
+        return render(request, 'addcomment.html', {'user':user, 'meeting' : meeting_id})
+    elif request.method == 'POST':
+        print('User id: ', user, "type:", type(user))
+        new_comment = Discussion(
+            disc_type = request.POST['disc_type'],
+            user = User.objects.get(id=user),
+            meeting = Meeting.objects.get(id=request.POST['meeting']),
+            comment = request.POST['comment'],
+        )
+        new_comment.save()
+        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id))
+
+class DiscussionList(ListView):
+    model = Discussion
+
+class RecList(ListView):
+    model = Book
+
 def clubs_index(request):
     clubs = Club.objects.all()
+    print(clubs.__dict__)
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
 def club(request, club_id):
