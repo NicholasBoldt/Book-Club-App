@@ -1,10 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class Club(models.Model):
     club_name = models.CharField(max_length=100)
     members = models.ManyToManyField(User)
+
+    def __str__(self):
+     return self.name
+    
+    def get_absolute_url(self):
+     return reverse('club', kwargs={'club_id': self.id})
 
 class Meeting(models.Model):
     date = models.DateField()
