@@ -124,7 +124,7 @@ def add_comment(request, club_id, meeting_id):
             comment = request.POST['comment'],
         )
         new_comment.save()
-        return redirect('/clubs/' + str(club_id) + '/' + str(meeting_id))
+        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id))
 
 class DiscussionList(ListView):
     model = Discussion

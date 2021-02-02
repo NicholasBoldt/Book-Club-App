@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Add comment!</h1>
+<h1>Add comment</h1>
 <form action="" method="POST">
     {% csrf_token %}
     <input type="textarea" name="comment">
@@ -14,5 +14,9 @@
     <input type="hidden" name="user" value="{{ user }}">
     <input type="submit" value="Add comment" class="btn">
 </form>
+
+<script>
+$('.dropdown-trigger').dropdown();
+</script>
 
 {% endblock%}
