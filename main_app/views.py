@@ -34,13 +34,14 @@ def signup(request):
     
 def select_book(request, club_id):
     books = None
-    if request.GET: # isbn search
+    if request.method == 'GET': # isbn search
         if 'isbn' in request.GET:
             isbn = [request.GET['isbn']]
             books = search_isbn(isbn)
         elif 'search_title' in request.GET: # author/title search
             books = search_title_author(request.GET['search_title'], request.GET['search_author'])
-    elif request.POST: # add selected title to database
+        return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
+    elif request.method == 'POST': # add selected title to database
         # print('Title: ', request.POST['title'], "\n Author: ", request.POST['author'], "\n Description: ",request.POST['desc'], "\n ISBN: ", request.POST['isbn'], "\n Image: ", request.POST['image_link'])
         new_book = Book(
             title=request.POST['title'],
@@ -55,9 +56,9 @@ def select_book(request, club_id):
         club = Club.objects.get(id=club_id)
         rec_list = club.book_set.all()
         print("THIS WORKS")
-        # return redirect(request, '/clubs/' +str(club_id) +'/recommendations')
-        # return redirect(request, 'index')
-    return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
+        return redirect('/clubs/' + str(club_id) +'/recommendations')
+    
+    # return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
 
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
