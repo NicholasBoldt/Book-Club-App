@@ -148,7 +148,8 @@ def club(request, club_id):
 def meeting(request, club_id, meeting_id):
     club = Club.objects.get(id=club_id)
     meeting = Meeting.objects.get(id=meeting_id)
-    return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting})
+    book = meeting.book
+    return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book})
 
 class ClubCreate(CreateView):
   model = Club

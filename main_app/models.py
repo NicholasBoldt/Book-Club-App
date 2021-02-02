@@ -43,7 +43,6 @@ class Discussion(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     comment = models.TextField(max_length=10000)
 
-
 class Rec(models.Model):
     votes = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -54,7 +53,6 @@ class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # rating = models.IntegerField()
     # book = models.ForeignKey(Book, on_delete=models.CASCADE)
-
 
 
 
