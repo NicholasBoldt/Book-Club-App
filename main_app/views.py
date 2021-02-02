@@ -8,7 +8,9 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book, Rec, User, Discussion
 from .models import Club
+from django.views.generic.edit import CreateView
 from django.views.generic import ListView, CreateView
+
 
 
 # Create your views here.
@@ -147,3 +149,9 @@ def meeting(request, club_id, meeting_id):
     club = Club.objects.get(id=club_id)
     meeting = Meeting.objects.get(id=meeting_id)
     return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting})
+
+class ClubCreate(CreateView):
+  model = Club
+  fields = '__all__'
+  success_url = '/clubs/'
+
