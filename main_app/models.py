@@ -52,5 +52,4 @@ class Rating(models.Model):
 
 
 
-
     # meetings = models.ForeignKey(Meeting, on_deletee=models.CASCADE)
