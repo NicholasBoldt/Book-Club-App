@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+import string
+import random
 
 # Create your models here.
 class Club(models.Model):
     club_name = models.CharField(max_length=100)
     members = models.ManyToManyField(User)
+    invite = models.CharField(max_length=6, default=''.join(random.choice(string.ascii_uppercase+string.digits) for i in range(6)))
 
     def __str__(self):
      return self.club_name
