@@ -34,8 +34,10 @@
             </nav>
         </div>
         <ul class="sidenav" id="mobile-nav">
+            {% if request.user.id %}
             <li><a href="{% url 'userprofile' request.user.id %}">My Account</a></li>
             <div class="divider"></div>
+            {% endif %}
             <li><a href="{% url 'index' %}">My Clubs</a></li>
             <div class="divider"></div>
             <li><a href="/Settings">Settings</a></li>
