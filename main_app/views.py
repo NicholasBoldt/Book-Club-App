@@ -140,7 +140,6 @@ class DiscussionList(ListView):
     model = Discussion
 
     def get_context_data(self, **kwargs):
-        print("Here it is:", self.kwargs['meeting_id'])
         meeting = Meeting.objects.get(id=self.kwargs['meeting_id'])
         book = meeting.book
         context = super().get_context_data(**kwargs)
