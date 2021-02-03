@@ -8,7 +8,7 @@ class Club(models.Model):
     members = models.ManyToManyField(User)
 
     def __str__(self):
-     return self.name
+     return self.club_name
     
     def get_absolute_url(self):
      return reverse('club', kwargs={'club_id': self.id})
