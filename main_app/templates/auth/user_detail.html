@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if user.first_name %}
+    <h1>{{user.first_name}}'s Account</h1>
+{% else %}
+    <h1>My Account</h1>
+{% endif %}
+        <div class="card">
+            <div class="card-content">Username: </span>{{user.username}} </span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">Email: </span>{{user.email}} </span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">My Clubs </span><a href="{% url 'index' %}">></a></span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">Books I want to read </span>></span>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'password_reset' %}"><div class="btn">Change Password</div></a>
+        </div>
+        <div>
+            <a href="{% url 'logout' %}"><div class="btn">Logout</div></a>
+        </div>
+
+
+
+
+{% endblock%}
