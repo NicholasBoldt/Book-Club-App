@@ -2,32 +2,39 @@
 {% block content %}
 
 {% if user.first_name %}
-    <h1>{{user.first_name}}'s Account</h1>
+    <h4>{{user.first_name}}'s Account</h4>
 {% else %}
-    <h1>My Account</h1>
+    <h4 class="center-align">My Account</h4>
 {% endif %}
-        <div class="card">
-            <div class="card-content">Username: </span>{{user.username}} </span>
+        <div class="center-align">
+            <h6>Username: {{user.username}} 
+            </h6>
+        </div>
+        <hr>
+        <div class="center-align">
+            <h6>Email: </span>{{user.email}} </span>
+            </h6>
+        </div>
+        <hr>
+        <div class="center-align">
+            <a href="{% url 'index' %}" class="card-content"><h6>My Book Clubs ></h6></a>
+        </div>
+        <hr>
+        <div class="center-align">
+            <h6>Books I want to read </span>></span>
+            </h6>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col s8">
+                <a href="{% url 'password_reset' %}"><div class="btn">Change Password</div></a>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-content">Email: </span>{{user.email}} </span>
+            <div class="col s4">
+                <a href="{% url 'logout' %}"><div class="btn">Logout</div></a>
             </div>
+            
         </div>
-        <div class="card">
-            <div class="card-content">My Clubs </span><a href="{% url 'index' %}">></a></span>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-content">Books I want to read </span>></span>
-            </div>
-        </div>
-        <div>
-            <a href="{% url 'password_reset' %}"><div class="btn">Change Password</div></a>
-        </div>
-        <div>
-            <a href="{% url 'logout' %}"><div class="btn">Logout</div></a>
-        </div>
+       
 
 
 
