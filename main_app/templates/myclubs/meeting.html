@@ -19,7 +19,7 @@
 <p> {{ book.desc }} </p>
 <br>
 <div class="center-align">
-    <a href="" class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></a>
+    <a href="{% url 'discussion' club.id meeting.id %}" class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></a>
 </div>
 
 
@@ -35,16 +35,17 @@
 <h6 class="center-align">Book Suggestions</h6>
 <hr>
 <div class="center-align">
-    <button class="btn">Recommend a Book</button>
+    <a href="{% url 'selectbook' club.id %}" class="btn">Recommend a Book</a>
 </div>
-<div class="row"></div>
+
+
 <p class="valign-wrapper">View All<i class="material-icons">keyboard_arrow_right</i></p>
 
 <hr/>
 <h6 class="center-align">Next Book</h6>
 <hr>
 <div class="center-align">
-    <button class="btn">Start a Poll</button>
+    <a href="{% url 'recommendations' club.id %}" class="btn">Vote on a book</a>
 </div>
 
 
