@@ -25,16 +25,18 @@
                 {% endif %}
                 <p>{{ d.comment }}</p>
                 
+                {% if request.user == d.user %}
                 <form action="delete/" method="POST">
                     {% csrf_token %}
                     <input type="hidden" value="{{ d.id }}" name="commentid">
                     <input type="submit" value="Delete" class="btn">
                 </form> 
+                {% endif %}
             </div>
         </div>
     {% endfor %}
 
-{% if not d %}
+{% if not discussion_list %}
     <h2>Start the discussion</h2>
 {% endif %}
 <div>
