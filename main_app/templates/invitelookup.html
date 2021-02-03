@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Join this club</h1>
+
+<div class="card">
+    <div class="card-content">
+        <h2>{{ club.club_name}}</h2>
+        <div class="row">
+            <div class="col s4"> <img src="{{ book.image }}" alt="Book Image" width="100%"></div>
+                <div class="col s8">
+                    <p>Currently reading</p>
+                    <h6>{{ book.title }} </h6>
+                    <p> by {{ book.author }}</p>
+                    <div>
+                        <a href="{% url 'joinclub' club.id %}"><div class="btn">Join</div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

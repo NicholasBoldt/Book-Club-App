@@ -130,6 +130,17 @@ def add_comment(request, club_id, meeting_id):
         new_comment.save()
         return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion', {'club_id':club_id, 'meeting_id':meeting_id})
 
+def invite_lookup(request, invite_code):
+    club = Club.objects.get(invite=invite_code)
+    meeting = Meeting.objects.all()
+    recent = meeting.last()
+    print('Recent meeting', recent.book.title)
+    return render(request, 'invitelookup.html', {'club':club, 'book': recent.book})
+
+def join_club(request, club_id):
+    pass
+
+
 def delete_comment(request, club_id, meeting_id):
     comment = Discussion.objects.get(id=request.POST['commentid'])
     print(comment)
