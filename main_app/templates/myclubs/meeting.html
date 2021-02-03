@@ -30,7 +30,7 @@
 <p>Meeting Locations: {{ meeting.location }} </p>
 <p>Meeting Link: {{ meeting.meeting_link }}</p>
 <p>Agenda: {{ meeting.chapters }}</p>
-<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i>Schedule a Meeting</p>
+<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meetings_create' %}" >Schedule a Meeting</a></p>
 <hr/>
 <h6 class="center-align">Book Suggestions</h6>
 <hr>

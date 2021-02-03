@@ -155,6 +155,11 @@ def meeting(request, club_id, meeting_id):
     book = meeting.book
     return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book})
 
+class MeetingCreate(CreateView):
+  model = Meeting
+  fields = '__all__'
+  success_url = 'clubs/<int:club_id>/meeting/<int:meeting_id>/create/'
+
 class ClubCreate(CreateView):
   model = Club
   fields = '__all__'

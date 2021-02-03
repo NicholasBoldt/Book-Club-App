@@ -14,16 +14,10 @@ urlpatterns = [
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/discussion/', views.DiscussionList.as_view(), name='discussion'),
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/discussion/add/', views.add_comment, name='addcomment'),
     path('accounts/', include('django.contrib.auth.urls')),
-<<<<<<< HEAD
-
     path('accounts/signup/', views.signup, name='signup'),
-
-
-    path('accounts/signup/', views.signup, name='signup'),
-=======
     path('accounts/user/<int:pk>/', views.UserProfile.as_view(), name='userprofile'),
-    path('accounts/signup/', views.signup, name='signup'),
     path('clubs/create/', views.ClubCreate.as_view(), name='clubs_create'),
->>>>>>> fc03f8b3be5a0bf15915c45fd9e7e3951e91c2cb
+    path('clubs/<int:club_id>/meeting/<int:meeting_id>/create/', views.ClubCreate.as_view(), name='meetings_create'),
+
 
 ]
