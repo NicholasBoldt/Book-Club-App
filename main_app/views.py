@@ -128,10 +128,23 @@ def add_comment(request, club_id, meeting_id):
             comment = request.POST['comment'],
         )
         new_comment.save()
-        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
+        return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion', {'club_id':club_id, 'meeting_id':meeting_id})
+
+def delete_comment(request, club_id, meeting_id):
+    comment = Discussion.objects.get(id=request.POST['commentid'])
+    print(comment)
+    comment.delete()
+    return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
 
 class DiscussionList(ListView):
     model = Discussion
+
+    def get_context_data(self, **kwargs):
+        meeting = Meeting.objects.get(id=self.kwargs['meeting_id'])
+        book = meeting.book
+        context = super().get_context_data(**kwargs)
+        context['book'] = book
+        return context
 
 class RecList(ListView):
     model = Book

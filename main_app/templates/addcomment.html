@@ -5,18 +5,23 @@
 <form action="" method="POST">
     {% csrf_token %}
     <input type="textarea" name="comment">
-    <select name="disc_type">
-        <option value="comment">Comment</option>
-        <option value="question">Discussion Question</option>
-        <option value="quote">Quote</option>
-    </select>
+
+      <!-- Dropdown Trigger -->
+  <div name="disc_type" value="comment" class='dropdown-trigger btn' data-target='dropdown1'>Comment Type</div>
+
+  <!-- Dropdown Structure -->
+        <select id='dropdown1'  class='dropdown-content' name="disc_type" class='dropdown-trigger btn' data-target='dropdown1'>
+            <option value="comment">Comment</option>
+            <option value="question">Discussion Question</option>
+            <option value="quote">Quote</option>
+        </select>       
     <input type="hidden" name="meeting" value="{{ meeting }}">
     <input type="hidden" name="user" value="{{ user }}">
     <input type="submit" value="Add comment" class="btn">
 </form>
 
 <script>
-$('.dropdown-trigger').dropdown();
+  $('.dropdown-trigger').dropdown();
 </script>
 
 {% endblock%}

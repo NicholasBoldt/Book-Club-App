@@ -1,19 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h1>Discussion</h1>
+    <h1>Discussion Board</h1>
+    <hr/>
+    <div class="row">
+        <div class="col s4"> <img src="{{ book.image }}" alt="Book Image" width="100%"></div>
+        <div class="col s8">
+            <h6>{{ book.title }} </h6>
+            <p> by {{ book.author }}</p>
+            Club Rating RATING<br>
+            Your Rating RATING<br>
+        </div>
+    </div>
+    <p> {{ book.desc }} </p>
+    <br>
 
     {% for d in discussion_list%}
         <div class="card">
             <div class="card-content">
-                <p>{{ d.user.first_name }} says:</p>
+                {% if d.user.first_name %}
+                    <p>{{ d.user.first_name }} left a {{ d.disc_type }}:</p>
+                {% else %}
+                    <p>{{ d.user.username }} says:</p>
+                {% endif %}
                 <p>{{ d.comment }}</p>
                 
-                <form action="" method="POST">
-                    <input type="submit" value="Edit" class="btn">
+                {% if request.user == d.user %}
+                <form action="delete/" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ d.id }}" name="commentid">
+                    <input type="submit" value="Delete" class="btn">
                 </form> 
+                {% endif %}
             </div>
         </div>
-    {% endfor%}
+    {% endfor %}
+
+{% if not discussion_list %}
+    <h2>Start the discussion</h2>
+{% endif %}
+<div>
+    <a href="add"><div class="btn">Add a comment</div></a>
+</div>
 
 {% endblock%}
