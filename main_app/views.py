@@ -2,17 +2,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 import requests 
 import os 
-from .models import Book, Rec
-from .models import Club, Meeting
+from .models import Book, User, Discussion, Rating, Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Book, Rec, User, Discussion, Rating
-from .models import Club
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, CreateView, DetailView
-
-
 
 
 # Create your views here.
@@ -38,7 +33,7 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 
-    
+@login_required    
 def select_book(request, club_id):
     books = None
     if request.method == 'GET': # isbn search
@@ -49,7 +44,6 @@ def select_book(request, club_id):
             books = search_title_author(request.GET['search_title'], request.GET['search_author'])
         return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
     elif request.method == 'POST': # add selected title to database
-        # print('Title: ', request.POST['title'], "\n Author: ", request.POST['author'], "\n Description: ",request.POST['desc'], "\n ISBN: ", request.POST['isbn'], "\n Image: ", request.POST['image_link'])
         new_book = Book(
             title=request.POST['title'],
             author=request.POST['author'],
@@ -64,8 +58,6 @@ def select_book(request, club_id):
         rec_list = club.book_set.all()
         return redirect('/clubs/' + str(club_id) +'/recommendations')
     
-    # return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
-
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
     my_key = os.environ['GOOGLE_BOOKS_API_KEY']
@@ -109,19 +101,12 @@ def search_title_author(search_title, search_author): # searches title and autho
     books = search_isbn(isbn)
     return books
 
-# Some test ISBNs:
-# 9781609618957
-# 9780140441185
-
-# def add_comment(request, club_id, meeting_id)
-#     return render(request, 'addcomment.html', meeting_id)
-
+@login_required
 def add_comment(request, club_id, meeting_id):
     user = request.user.id
     if request.method == 'GET':
         return render(request, 'addcomment.html', {'user':user, 'meeting' : meeting_id})
     elif request.method == 'POST':
-        print('User id: ', user, "type:", type(user))
         new_comment = Discussion(
             disc_type = request.POST['disc_type'],
             user = User.objects.get(id=user),
@@ -131,26 +116,30 @@ def add_comment(request, club_id, meeting_id):
         new_comment.save()
         return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion', {'club_id':club_id, 'meeting_id':meeting_id})
 
+@login_required
+def enter_code(request):
+    return redirect('/invitecode/' + request.POST['invite_code'])
+
 def invite_lookup(request, invite_code):
     club = Club.objects.get(invite=invite_code)
-    meeting = Meeting.objects.all()
+    print(invite_code, club.id)
+    meeting = Meeting.objects.all().filter(club_id=club.id)
     recent = meeting.last()
-    print('Recent meeting', recent.book.title)
+    print(recent)
     return render(request, 'invitelookup.html', {'club':club, 'book': recent.book})
 
 @login_required
 def join_club(request, club_id):
     club = Club.objects.get(id=club_id)
     club.members.add(User.objects.get(id=request.user.id))
-    print('Here it is:', club.members.all())
-    return render(request, 'myclubs/index.html')
+    return redirect('index')
 
-
+@login_required
 def delete_comment(request, club_id, meeting_id):
     comment = Discussion.objects.get(id=request.POST['commentid'])
-    print(comment)
     comment.delete()
     return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
+
 
 class DiscussionList(ListView):
     model = Discussion
@@ -162,22 +151,27 @@ class DiscussionList(ListView):
         context['book'] = book
         return context
 
+
 class RecList(ListView):
     model = Book
+
 
 class UserProfile(DetailView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
 
+@login_required
 def clubs_index(request):
     clubs = Club.objects.all()
     print(clubs.__dict__)
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
+@login_required
 def club(request, club_id):
     club = Club.objects.get(id=club_id)
     return render(request, 'myclubs/club.html', { 'club': club})
 
+@login_required
 def meeting(request, club_id, meeting_id):
     club = Club.objects.get(id=club_id)
     meeting = Meeting.objects.get(id=meeting_id)
@@ -205,8 +199,6 @@ def int_to_star_string(rating):
     for r in range (rating):
         stars += '*'
     return stars
-
-    
 
 
 class ClubCreate(CreateView):

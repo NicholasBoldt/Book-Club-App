@@ -25,11 +25,12 @@
         <p class="center-align">Or</p>
     </div>
     <div class="col s12">
-        <form action="" class="vertical-align-middle input-field">
-            <label for="invite_code">Join a Book Club</label>
+        <form action="/invitecode/" method="POST" class="vertical-align-middle input-field">
+            {% csrf_token %}
+            <label for="invite_code">Enter an invite code</label>
             <input placeholder="Invite Code" type="text" id="invite_code" name="invite_code">
-        <a type="submit" class="btn"><i class="material-icons">arrow_forward</i></a>
-    </form>
+            <button type="submit" class="btn"><i class="material-icons">arrow_forward</i></a>
+        </form>
     </div>
     
  
