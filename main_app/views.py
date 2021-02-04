@@ -9,6 +9,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, CreateView, DetailView
 
+def truncate(string): # Shortens a string to the end of the first sentence past 250 characters
+    MAX = 250
+    truncated = ''
+    punctuation ='.?!'
+    for l in string:
+        truncated += l
+        if len(truncated) > MAX and l in punctuation:
+            break
+    return truncated
 
 # Create your views here.
 def home(request):
@@ -47,7 +56,7 @@ def select_book(request, club_id):
         new_book = Book(
             title=request.POST['title'],
             author=request.POST['author'],
-            desc=request.POST['desc'],
+            desc=truncate(request.POST['desc']),
             isbn=request.POST['isbn'],
             image=request.POST['image_link'],
             club=Club.objects.get(id=club_id)
