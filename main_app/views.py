@@ -6,6 +6,7 @@ from .models import Book, Rec
 from .models import Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from .models import Book, Rec, User, Discussion, Rating
 from .models import Club
 from django.views.generic.edit import CreateView
@@ -129,6 +130,21 @@ def add_comment(request, club_id, meeting_id):
         )
         new_comment.save()
         return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion', {'club_id':club_id, 'meeting_id':meeting_id})
+
+def invite_lookup(request, invite_code):
+    club = Club.objects.get(invite=invite_code)
+    meeting = Meeting.objects.all()
+    recent = meeting.last()
+    print('Recent meeting', recent.book.title)
+    return render(request, 'invitelookup.html', {'club':club, 'book': recent.book})
+
+@login_required
+def join_club(request, club_id):
+    club = Club.objects.get(id=club_id)
+    club.members.add(User.objects.get(id=request.user.id))
+    print('Here it is:', club.members.all())
+    return render(request, 'myclubs/index.html')
+
 
 def delete_comment(request, club_id, meeting_id):
     comment = Discussion.objects.get(id=request.POST['commentid'])
