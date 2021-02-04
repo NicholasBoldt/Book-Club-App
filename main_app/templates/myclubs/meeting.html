@@ -12,8 +12,26 @@
     <div class="col s8">
         <h6>{{ book.title }} </h6>
         <p> by {{ book.author }}</p>
-        Club Rating {{ ratings.average }}<br>
-        Your Rating {{ ratings.user }}<br>
+        Club Rating
+        {% for r in ratings.average %}
+            {% if r == '*' %}
+                <i class="material-icons">star</i>
+            {% else %}
+                <i class="material-icons">star_border</i>  
+            {% endif %}
+        {% endfor %}
+        <br>
+        Your rating  
+        <form action="{% url 'rate' club.id meeting.id %}" method="POST"> 
+            {% csrf_token %}           
+        {% for r in ratings.user %}
+            {% if r == '*' %}
+                <button type="submit" value="{{forloop.counter}}" name="rating" style="border:0; background-color:white; max-width:30px;"><i type="submit" class="material-icons">star</i>
+            {% else %}
+                <button type="submit" value="{{forloop.counter}}" name="rating" style="border:0; background-color:white; max-width:30px;"><i class="material-icons">star_border</i></button>
+            {% endif %}
+        {% endfor %}
+        </form>
     </div>
 </div>
 <p> {{ book.desc }} </p>
