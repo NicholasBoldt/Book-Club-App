@@ -8,7 +8,7 @@ urlpatterns = [
     path('invitecode/', views.enter_code),
     path('invitecode/<str:invite_code>/', views.invite_lookup, name='invitelookup'),
     path('clubs/', views.clubs_index, name='index'),
-    path('clubs/<int:club_id>/', views.club, name='club'),
+    path('clubs/<int:club_id>/meeting', views.club, name='club'),
     path('clubs/<int:club_id>/join', views.join_club, name='joinclub'),
     path('clubs/<int:club_id>/selectbook/', views.select_book, name='selectbook'),
     path('clubs/<int:pk>/recommendations/', views.RecList.as_view(), name='recommendations'),

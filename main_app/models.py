@@ -26,6 +26,10 @@ class Book(models.Model):
     # meeting = models.OneToOneField(Meeting, on_delete=models.CASCADE, primary_key=True)
     # ratings = models.ForeignKey(Rating, on_delete=models.CASCADE)
 
+    def __str__(self):
+     return self.title
+    
+
 class Meeting(models.Model):
     date = models.DateField()
     meeting_link = models.CharField(max_length=100,)
@@ -34,7 +38,9 @@ class Meeting(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
 
-
+    def __str__(self):
+     return self.date
+    
 
 class Discussion(models.Model):
     COMMENT_TYPES = (
