@@ -188,17 +188,42 @@ def meeting(request, club_id, meeting_id):
     ratings = get_ratings(meeting_id, request.user.id)
     return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book, 'ratings': ratings})
 
+@login_required
+def rate(request, club_id, meeting_id):
+    book = Meeting.objects.get(id=meeting_id).book
+    existing = Rating.objects.filter(book_id=book.id, user_id=request.user.id)
+    print("XX:", existing)
+    if len(existing) > 0:
+        new_rating = Rating.objects.get(book_id=book.id, user_id=request.user.id)
+        new_rating.rating = request.POST['rating']
+    else:
+        new_rating = Rating(
+            user_id = request.user.id,
+            rating = request.POST['rating'],
+            book_id = book.id
+        )
+    print(new_rating.user_id, new_rating.rating, new_rating.book_id)
+    new_rating.save()
+    return redirect(reverse('meeting', args=(club_id, meeting_id)))
+
 def get_ratings(meeting_id, user_id):
     meeting = Meeting.objects.get(id=meeting_id)
     book = meeting.book
+    print("Book: ", meeting.book)
     ratings = book.rating_set.all()
+    print("Ratings:", ratings)
     if len(ratings) > 0:
         total = 0
         for r in ratings:
             total += r.rating
         average_rating = int(total/len(ratings))
-        user_rating = ratings.filter(user_id=user_id)
-        ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating[0].rating)}
+        if len(ratings.filter(user_id=user_id)) > 0:
+            print("User ratings:", ratings)
+            user_rating = ratings.filter(user_id=user_id)[0].rating
+        else:
+            user_rating = 0
+        print("User rating:", user_rating)
+        ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
     else:
         ratings = {'average': '', 'user':''}
     return ratings

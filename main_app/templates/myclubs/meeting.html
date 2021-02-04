@@ -22,12 +22,13 @@
         {% endfor %}
         <br>
         Your rating  
-        <form action="/rate" method="POST">            
+        <form action="{% url 'rate' club.id meeting.id %}" method="POST"> 
+            {% csrf_token %}           
         {% for r in ratings.user %}
             {% if r == '*' %}
-                <button type="submit" value="r" name="rating" style="border:0; background-color:white; max-width:30px;"><i type="submit" class="material-icons">star</i>
+                <button type="submit" value="{{forloop.counter}}" name="rating" style="border:0; background-color:white; max-width:30px;"><i type="submit" class="material-icons">star</i>
             {% else %}
-                <button type="submit" value="r" name="rating" style="border:0; background-color:white; max-width:30px;"><i class="material-icons">star_border</i></button>
+                <button type="submit" value="{{forloop.counter}}" name="rating" style="border:0; background-color:white; max-width:30px;"><i class="material-icons">star_border</i></button>
             {% endif %}
         {% endfor %}
         </form>
