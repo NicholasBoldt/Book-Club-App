@@ -6,7 +6,7 @@ from .models import Book, Rec
 from .models import Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Book, Rec, User, Discussion
+from .models import Book, Rec, User, Discussion, Rating
 from .models import Club
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, CreateView, DetailView
@@ -153,7 +153,32 @@ def meeting(request, club_id, meeting_id):
     club = Club.objects.get(id=club_id)
     meeting = Meeting.objects.get(id=meeting_id)
     book = meeting.book
-    return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book})
+    ratings = get_ratings(meeting_id, request.user.id)
+    return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book, 'ratings': ratings})
+
+def get_ratings(meeting_id, user_id):
+    meeting = Meeting.objects.get(id=meeting_id)
+    book = meeting.book
+    ratings = book.rating_set.all()
+    if len(ratings) > 0:
+        total = 0
+        for r in ratings:
+            total += r.rating
+        average_rating = int(total/len(ratings))
+        user_rating = ratings.filter(user_id=user_id)
+        ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating[0].rating)}
+    else:
+        ratings = {'average': '', 'user':''}
+    return ratings
+
+def int_to_star_string(rating):
+    stars = ''
+    for r in range (rating):
+        stars += '*'
+    return stars
+
+    
+
 
 class ClubCreate(CreateView):
   model = Club
