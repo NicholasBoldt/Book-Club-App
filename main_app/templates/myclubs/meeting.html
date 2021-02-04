@@ -4,7 +4,7 @@
 
 <div> 
     <h5 class="center-align" style="font-weight:700">{{ club.club_name }}</h5>
-    <p class="members valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
+    <p class="vertical-align-middle"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
 </div>
 <hr/>
 <div class="row">
@@ -12,12 +12,11 @@
     <div class="col s8">
         <h6>{{ book.title }} </h6>
         <p> by {{ book.author }}</p>
-        Club Rating RATING<br>
-        Your Rating RATING<br>
+        Club Rating {{ ratings.average }}<br>
+        Your Rating {{ ratings.user }}<br>
     </div>
 </div>
 <p> {{ book.desc }} </p>
-<br>
 <div class="center-align">
     <a href="{% url 'discussion' club.id meeting.id %}" class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></a>
 </div>
@@ -39,7 +38,7 @@
 </div>
 
 
-<p class="valign-wrapper">View All<i class="material-icons">keyboard_arrow_right</i></p>
+<p class="vertical-align-right">View All<i class="material-icons">keyboard_arrow_right</i></p>
 
 <hr/>
 <h6 class="center-align">Next Book</h6>
