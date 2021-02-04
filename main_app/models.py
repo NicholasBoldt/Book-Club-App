@@ -51,12 +51,5 @@ class Rec(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # rating = models.IntegerField()
-    # book = models.ForeignKey(Book, on_delete=models.CASCADE)
-
-
-
-
-
-
-    # meetings = models.ForeignKey(Meeting, on_deletee=models.CASCADE)
+    rating = models.IntegerField(blank=True, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, blank=True, null=True)
