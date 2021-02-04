@@ -12,7 +12,11 @@
                     <h6>{{ book.title }} </h6>
                     <p> by {{ book.author }}</p>
                     <div>
-                        <a href="{% url 'joinclub' club.id %}"><div class="btn">Join</div></a>
+                        {% if request.user.id %}
+                            <p><a href="{% url 'joinclub' club.id %}"><div class="btn">Join</div></a></p>
+                        {% else %}
+                            <p><a href="{% url 'joinclub' club.id %}"><div class="btn">Sign Up</div></a> or <a href="{% url 'joinclub' club.id %}"><div class="btn">Log In</div></a> to join</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

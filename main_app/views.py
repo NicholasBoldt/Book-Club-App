@@ -6,6 +6,7 @@ from .models import Book, Rec
 from .models import Club, Meeting
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from .models import Book, Rec, User, Discussion
 from .models import Club
 from django.views.generic.edit import CreateView
@@ -137,8 +138,12 @@ def invite_lookup(request, invite_code):
     print('Recent meeting', recent.book.title)
     return render(request, 'invitelookup.html', {'club':club, 'book': recent.book})
 
+@login_required
 def join_club(request, club_id):
-    pass
+    club = Club.objects.get(id=club_id)
+    club.members.add(User.objects.get(id=request.user.id))
+    print('Here it is:', club.members.all())
+    return render(request, 'myclubs/index.html')
 
 
 def delete_comment(request, club_id, meeting_id):
