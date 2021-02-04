@@ -3,48 +3,36 @@
 
 
 
-<h3>My Book Clubs</h3>
+<h4 class="center-align" style="font-weight:700">My Book Clubs</h4>
+<hr>
 
 <div class="row">
 
- <div class="col s8" >
-    {% for club in clubs %}
-    <a href="{% url 'club' club.id %}">
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">{{ club.club_name}}</span>
-            <p>Meetings: {{ meeting.date }}</p>
-            <p class="valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }} <i class="material-icons">keyboard_arrow_right</i></p>
-            <p class="right-align"><input type="submit" class="btn" value="->"></p>
-            
-        </div>
-    
+    <div class="col s12">
+        {% for club in clubs %}
+        <a href="{% url 'club' club.id %}">
+            <div class="card-content">
+                <h6 style="font-weight:700">{{ club.club_name}}</h6>
+                <p>Next Meeting: {{ meeting.date }}</p>
+                <p class="valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }}</p>
+            </div>
+        </a>
+        <hr />
+        {% endfor %}
     </div>
-    </a>
-    {% endfor %}
-  </a>
-
-
-<h2>Account Created</h2>
-
- </div>
-
- <div class="col s4" class="valign-wrapper" >
-  <a href="{% url 'clubs_create' %}" >Create a Book Club</a>
-  <p class="center-align">Or</p>
-  <a href="{% url 'index' %}" >Join a Book Club</a>
-  
- <br>
- <br>
- <br>
-
-  <form action="" class="left-align">
-    Invite Code:
-    <input type="text" name="invite_code" label="Invite Code">
-    <input type="submit" class="btn" value="->">
-  </form>
- </div>
-
+    <div class="col s12" >
+        <a href="{% url 'clubs_create' %}"><h5 class="vertical-align-middle">Create a Book Club <i class="material-icons">add_circle_outline</i></h5></a>
+        <p class="center-align">Or</p>
+    </div>
+    <div class="col s12">
+        <form action="" class="vertical-align-middle input-field">
+            <label for="invite_code">Join a Book Club</label>
+            <input placeholder="Invite Code" type="text" id="invite_code" name="invite_code">
+        <a type="submit" class="btn"><i class="material-icons">arrow_forward</i></a>
+    </form>
+    </div>
+    
+ 
 
 </div>
 {% endblock %}
