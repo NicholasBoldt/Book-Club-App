@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book, Rec, User, Discussion
 from .models import Club
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView,UpdateView
 
 
 
@@ -157,11 +157,19 @@ def meeting(request, club_id, meeting_id):
     book = meeting.book
     return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book})
 
-
-class ClubCreate(CreateView):
-  model = Club
-  fields = '__all__'
-  success_url = '/clubs/'
-
 def create_club(request):
-    return render(request,'main_app/create_club.html')
+    user = request.user.id
+    if request.method == 'GET':
+        return render(request, 'main_app/create_club.html', {'user':user, 'club': club, })
+    elif request.method == 'POST':
+        create_club = meeting(
+            club = Club.objects.get(id=club_id),
+            meeting = Meeting.objects.get(id=meeting_id)
+        )
+        new_comment.save()
+        return redirect('/clubs/' + str(club_id) + '/meeting/' )
+
+class MeetingUpdate(UpdateView):
+  model = Meeting
+  fields = ['date', 'meeting_link', 'location', 'chapters']
+  success_url = '/clubs/'

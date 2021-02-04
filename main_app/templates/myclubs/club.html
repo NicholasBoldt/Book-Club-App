@@ -29,7 +29,7 @@
 <p>Meeting Link: {{ meeting.meeting_link }}</p>
 <p>Agenda: {{ meeting.chapters }}</p>
 <hr/>
-<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meetings_create' %}" >Schedule a Meeting</a></p>
+<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meeting_update' club.id %}" >Update a Meeting</a></p>
 <hr/>
 Book Suggestions
 <hr>
