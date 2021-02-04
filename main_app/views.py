@@ -171,10 +171,8 @@ class UserProfile(DetailView):
 
 @login_required
 def clubs_index(request):
-    clubs = Club.objects.all()
-
-
-    return render(request, 'myclubs/index.html', { 'clubs': clubs, 'meetings': meetings })
+    clubs = Club.objects.all().filter(members=request.user.id)
+    return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
 
 
@@ -230,4 +228,4 @@ def create_club(request):
 class MeetingUpdate(UpdateView):
   model = Meeting
   fields = ['date', 'meeting_link', 'location', 'chapters']
-  success_url = '/clubs/'
+  success_url = '/clubs/' 

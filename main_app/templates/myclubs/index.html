@@ -16,12 +16,7 @@
                 <h6 style="font-weight:700">{{ club.club_name}}</h6>
                 <p>Next Meeting:
                 
-                    {% for meeting in meetings %}
-                    {% if meeting.club_id == club.id %}
-                        {{ meeting.date }}
-
-                    {% endif %}
-                    {% endfor %}
+                
                </p>
                 <p class="valign-wrapper"><i class="material-icons">group</i> Members: {{ club.members.count }}</p>
             </div>

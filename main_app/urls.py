@@ -20,7 +20,7 @@ urlpatterns = [
     path('accounts/signup/', views.signup, name='signup'),
     path('accounts/user/<int:pk>/', views.UserProfile.as_view(), name='userprofile'),
     path('clubs/create/', views.create_club, name='clubs_create'),
-    path('clubs/<int:pk>/update/', views.MeetingUpdate.as_view(), name='meeting_update'),
+    path('clubs/<int:club_id>/meeting/<int:pk>/update/', views.MeetingUpdate.as_view(), name='meeting_update'),
     
     
 
