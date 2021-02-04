@@ -163,8 +163,11 @@ class UserProfile(DetailView):
 @login_required
 def clubs_index(request):
     clubs = Club.objects.all()
-    print(clubs.__dict__)
-    return render(request, 'myclubs/index.html', { 'clubs': clubs })
+
+
+    return render(request, 'myclubs/index.html', { 'clubs': clubs, 'meetings': meetings })
+
+
 
 @login_required
 def club(request, club_id):
