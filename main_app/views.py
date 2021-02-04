@@ -179,9 +179,10 @@ def clubs_index(request):
 @login_required
 def club(request, club_id):
     club = Club.objects.get(id=club_id)
-    meeting=Meeting.objects.get(club_id=club_id)
+    meeting = Meeting.objects.all().filter(club_id=club.id)
+    recent = meeting.last()
 
-    return render(request, 'myclubs/club.html', { 'club': club,'meeting': meeting,})
+    return redirect('meeting', club_id, recent.id)
 
 @login_required
 def meeting(request, club_id, meeting_id):
@@ -256,4 +257,8 @@ def create_club(request):
 class MeetingUpdate(UpdateView):
   model = Meeting
   fields = ['date', 'meeting_link', 'location', 'chapters']
+  success_url = '/clubs/' 
+
+class MeetingCreate(CreateView):
+  model = Meeting
   success_url = '/clubs/' 
