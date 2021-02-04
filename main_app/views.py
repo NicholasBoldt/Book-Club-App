@@ -205,8 +205,11 @@ def get_ratings(meeting_id, user_id):
 
 def int_to_star_string(rating):
     stars = ''
-    for r in range (rating):
-        stars += '*'
+    for r in range (5):
+        if r < rating:
+            stars += '*'  
+        else:
+            stars+= '-'  
     return stars
 
 
