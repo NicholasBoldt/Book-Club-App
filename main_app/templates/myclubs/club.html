@@ -22,9 +22,14 @@
 </div>
 
 <hr/>
-Upcoming Meeting
+<h6 class="center-align">Upcoming Meeting</h6>
 <hr/>
-<p>There are no upcoming meetings planned</p>
+<p>Date and Time: {{ meeting.date }}</p>
+<p>Meeting Locations: {{ meeting.location }} </p>
+<p>Meeting Link: {{ meeting.meeting_link }}</p>
+<p>Agenda: {{ meeting.chapters }}</p>
+<hr/>
+<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meetings_create' %}" >Schedule a Meeting</a></p>
 <hr/>
 Book Suggestions
 <hr>

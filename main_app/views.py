@@ -147,7 +147,9 @@ def clubs_index(request):
 
 def club(request, club_id):
     club = Club.objects.get(id=club_id)
-    return render(request, 'myclubs/club.html', { 'club': club})
+    meeting=Meeting.objects.get(club_id=club_id)
+
+    return render(request, 'myclubs/club.html', { 'club': club,'meeting': meeting,})
 
 def meeting(request, club_id, meeting_id):
     club = Club.objects.get(id=club_id)
@@ -155,13 +157,11 @@ def meeting(request, club_id, meeting_id):
     book = meeting.book
     return render(request, 'myclubs/meeting.html', { 'club': club, 'meeting': meeting, 'book': book})
 
-class MeetingCreate(CreateView):
-  model = Meeting
-  fields = '__all__'
-  success_url = 'clubs/<int:club_id>/meeting/<int:meeting_id>/create/'
 
 class ClubCreate(CreateView):
   model = Club
   fields = '__all__'
   success_url = '/clubs/'
 
+def create_club(request):
+    return render(request,'main_app/create_club.html')

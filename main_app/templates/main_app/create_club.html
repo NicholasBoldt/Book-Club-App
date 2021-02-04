@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Create a Club</h1>
+
+    <form action="" method="post">
+  
+        {% csrf_token %}
+        <table>
+          
+          {{ form.as_table }}
+        </table>
+       
+    
+
+{% endblock%}
