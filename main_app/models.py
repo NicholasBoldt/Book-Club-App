@@ -28,11 +28,13 @@ class Book(models.Model):
 
 class Meeting(models.Model):
     date = models.DateField()
-    meeting_link = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
+    meeting_link = models.CharField(max_length=100,)
+    location = models.CharField(max_length=100,)
     chapters = models.CharField(max_length=100, default='All')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
+
+
 
 class Discussion(models.Model):
     COMMENT_TYPES = (
