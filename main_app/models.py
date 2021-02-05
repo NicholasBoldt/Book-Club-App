@@ -31,15 +31,15 @@ class Book(models.Model):
     
 
 class Meeting(models.Model):
-    date = models.DateField()
-    meeting_link = models.CharField(max_length=100,)
-    location = models.CharField(max_length=100,)
+    date = models.DateField(blank=True, null=True)
+    meeting_link = models.CharField(max_length=100, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
     chapters = models.CharField(max_length=100, default='All')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
 
-    def __str__(self):
-     return self.date
+    # def __str__(self):
+    #  return self.date
     
 
 class Discussion(models.Model):
@@ -54,11 +54,11 @@ class Discussion(models.Model):
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     comment = models.TextField(max_length=10000)
 
-class Rec(models.Model):
-    votes = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE)
+# class Rec(models.Model):
+#     votes = models.IntegerField()
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+#     club = models.ForeignKey(Club, on_delete=models.CASCADE)
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -15,7 +15,7 @@
                         {% if request.user.id %}
                             <p><a href="{% url 'joinclub' club.id %}"><div class="btn">Join</div></a></p>
                         {% else %}
-                            <p><a href="{% url 'joinclub' club.id %}"><div class="btn">Sign Up</div></a> or <a href="{% url 'joinclub' club.id %}"><div class="btn">Log In</div></a> to join</p>
+                            <p><a href="{% url 'joinclub' club.id %}"><div class="btn">Sign Up / Log In</div> to join</p>
                         {% endif %}
                     </div>
                 </div>

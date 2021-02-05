@@ -4,16 +4,33 @@
     <h1>Discussion Board</h1>
     <hr/>
     <div class="row">
-        <div class="col s4"> <img src="{{ book.image }}" alt="Book Image" width="100%"></div>
+        <div class="col s4"> <a href="{% url 'meeting' club_id meeting_id %}"><img src="{{ book.image }}" alt="Book Image" width="100%"></a></div>
         <div class="col s8">
             <h6>{{ book.title }} </h6>
             <p> by {{ book.author }}</p>
-            Club Rating RATING<br>
-            Your Rating RATING<br>
+            Club Rating
+            <br>
+            {% for r in ratings.average %}
+                {% if r == '*' %}
+                    <i class="material-icons">star</i>
+                {% else %}
+                    <i class="material-icons">star_border</i>  
+                {% endif %}
+            {% endfor %}
+            <br>
+            Your Rating
+            <br>
+            {% for r in ratings.user %}
+            {% if r == '*' %}
+                <i class="material-icons">star</i>
+            {% else %}
+                <i class="material-icons">star_border</i>  
+            {% endif %}
+        {% endfor %}
         </div>
     </div>
     <p> {{ book.desc }} </p>
-    <br>
+    <hr>
 
     {% for d in discussion_list%}
         <div class="card">

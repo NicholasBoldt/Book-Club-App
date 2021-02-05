@@ -8,11 +8,13 @@
 </div>
 <hr/>
 <div class="row">
+    {% if book %}
     <div class="col s4"> <img src="{{ book.image }}" alt="Book Image" width="100%"></div>
     <div class="col s8">
         <h6>{{ book.title }} </h6>
         <p> by {{ book.author }}</p>
         Club Rating
+        <br>
         {% for r in ratings.average %}
             {% if r == '*' %}
                 <i class="material-icons">star</i>
@@ -21,7 +23,7 @@
             {% endif %}
         {% endfor %}
         <br>
-        Your rating  
+        Your rating
         <form action="{% url 'rate' club.id meeting.id %}" method="POST"> 
             {% csrf_token %}           
         {% for r in ratings.user %}
@@ -33,13 +35,17 @@
         {% endfor %}
         </form>
     </div>
+    {% else %}
+    <div class="center-align">
+    <a href="{% url 'addrecc' club.id meeting.id %}" class="btn">Add a book<i class="material-icons right">keyboard_arrow_right</i></a>
+    </div>
+    <hr>
+    {% endif %}
 </div>
 <p> {{ book.desc }} </p>
 <div class="center-align">
     <a href="{% url 'discussion' club.id meeting.id %}" class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></a>
 </div>
-
-
 <hr/>
 <h6 class="center-align">Upcoming Meeting</h6>
 <hr/>
@@ -47,16 +53,16 @@
 <p>Meeting Locations: {{ meeting.location }} </p>
 <p>Meeting Link: {{ meeting.meeting_link }}</p>
 <p>Agenda: {{ meeting.chapters }}</p>
-<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meeting_update' club.id meeting.id %}" >Update a Meeting</a></p>
+<p class="valign-wrapper"><i class="material-icons">add_circle_outline</i><a href="{% url 'meeting_update' club.id meeting.id %}" >Edit meeting details</a></p>
 <hr/>
 <h6 class="center-align">Book Suggestions</h6>
 <hr>
 <div class="center-align">
-    <a href="{% url 'selectbook' club.id %}" class="btn">Recommend a Book</a>
+    <a href="{% url 'selectbook' club.id meeting.id %}" class="btn">Recommend a Book</a>
 </div>
 
 
-<p class="vertical-align-right">View All<i class="material-icons">keyboard_arrow_right</i></p>
+<p class="vertical-align-right"><a href="{% url 'addrecc' club.id meeting.id %}">View All</a><i class="material-icons">keyboard_arrow_right</i></p>
 
 <hr/>
 <h6> Invite code: {{ club.invite }}</h6>
