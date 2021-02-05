@@ -150,20 +150,25 @@ def delete_comment(request, club_id, meeting_id):
     return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
 
 
-class DiscussionList(ListView):
-    model = Discussion
+# class DiscussionList(ListView):
+#     model = Discussion
 
-    def get_context_data(self, **kwargs):
-        meeting = Meeting.objects.get(id=self.kwargs['meeting_id'])
-        book = meeting.book
-        context = super().get_context_data(**kwargs)
-        context['book'] = book
-        return context
+#     def get_context_data(self, **kwargs):
+#         meeting = Meeting.objects.get(id=self.kwargs['meeting_id'])
+#         book = meeting.book
+#         context = super().get_context_data(**kwargs)
+#         context['book'] = book
+#         return context
+
+def discussion_list(request, club_id, meeting_id):
+    discussion = Discussion.objects.filter(meeting=meeting_id)
+    print("Discussion", discussion)
+    book = Meeting.objects.get(id=meeting_id).book
+    return render(request, 'main_app/discussion_list.html', {'discussion_list':discussion, 'book':book})
 
 
 class RecList(ListView):
     model = Book
-
 
 class UserProfile(DetailView):
     model = User
@@ -182,8 +187,6 @@ def clubs_index(request):
             print("Recent", recent.date)
             club.date = recent.date
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
-
-
 
 @login_required
 def club(request, club_id):
@@ -221,21 +224,22 @@ def rate(request, club_id, meeting_id):
 def get_ratings(meeting_id, user_id):
     meeting = Meeting.objects.get(id=meeting_id)
     book = meeting.book
-    print("Book: ", meeting.book)
-    ratings = book.rating_set.all()
-    print("Ratings:", ratings)
-    if len(ratings) > 0:
-        total = 0
-        for r in ratings:
-            total += r.rating
-        average_rating = int(total/len(ratings))
-        if len(ratings.filter(user_id=user_id)) > 0:
-            print("User ratings:", ratings)
-            user_rating = ratings.filter(user_id=user_id)[0].rating
-        else:
-            user_rating = 0
-        print("User rating:", user_rating)
-        ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
+    if book:
+        print("Book: ", meeting.book)
+        ratings = book.rating_set.all()
+        print("Ratings:", ratings)
+        if len(ratings) > 0:
+            total = 0
+            for r in ratings:
+                total += r.rating
+            average_rating = int(total/len(ratings))
+            if len(ratings.filter(user_id=user_id)) > 0:
+                print("User ratings:", ratings)
+                user_rating = ratings.filter(user_id=user_id)[0].rating
+            else:
+                user_rating = 0
+            print("User rating:", user_rating)
+            ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
     else:
         ratings = {'average': '-----', 'user':'-----'}
     return ratings
@@ -253,20 +257,26 @@ def int_to_star_string(rating):
 def create_club(request):
     user = request.user.id
     if request.method == 'GET':
-        return render(request, 'main_app/create_club.html', {'user':user, 'club': club, })
+        return render(request, 'main_app/create_club.html', {'user':user })
     elif request.method == 'POST':
-        create_club = meeting(
-            club = Club.objects.get(id=club_id),
-            meeting = Meeting.objects.get(id=meeting_id)
+        new_club = Club(
+            club_name = request.POST['clubname'],
         )
-        new_comment.save()
-        return redirect('/clubs/' + str(club_id) + '/meeting/' )
+        new_club.save()
+        new_meeting = Meeting(
+            club = new_club
+        )
+        new_meeting.save()
+        new_club.members.add(user)
+        new_club.save()
+    
+        return redirect('home')
 
 class MeetingUpdate(UpdateView):
   model = Meeting
   fields = ['date', 'meeting_link', 'location', 'chapters']
   success_url = '/clubs/' 
 
-class MeetingCreate(CreateView):
-  model = Meeting
-  success_url = '/clubs/' 
+# class MeetingCreate(CreateView):
+#   model = Meeting
+#   success_url = '/clubs/' 

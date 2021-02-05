@@ -31,9 +31,9 @@ class Book(models.Model):
     
 
 class Meeting(models.Model):
-    date = models.DateField()
-    meeting_link = models.CharField(max_length=100,)
-    location = models.CharField(max_length=100,)
+    date = models.DateField(blank=True, null=True)
+    meeting_link = models.CharField(max_length=100, blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
     chapters = models.CharField(max_length=100, default='All')
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)

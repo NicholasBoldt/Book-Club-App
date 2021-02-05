@@ -2,19 +2,11 @@
 {% block content %}
 
     <h1>Create a Club</h1>
-    <p>Club Name</p><input>
-    <p>Members</p><input>
-    <p>Meeting time</p><input>
-
-
-    <form action="" method="post">
-  
+    <p>Enter a name for your book club:</p>
+    <form action="" method="POST">
       {% csrf_token %}
-      <table>
-        
-        {{ form.as_table }}
-      </table>
-      <input type="submit" value="Submit!" class="btn">
+      <input type="text" name="clubname">
+      <input type="submit" value="Create Club" class="btn">
     </form>
     
     

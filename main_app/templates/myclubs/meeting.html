@@ -8,6 +8,7 @@
 </div>
 <hr/>
 <div class="row">
+    {% if book %}
     <div class="col s4"> <img src="{{ book.image }}" alt="Book Image" width="100%"></div>
     <div class="col s8">
         <h6>{{ book.title }} </h6>
@@ -33,13 +34,17 @@
         {% endfor %}
         </form>
     </div>
+    {% else %}
+    <div class="center-align">
+    <a href="{% url 'addrecc' club.id meeting.id %}" class="btn">Add a book<i class="material-icons right">keyboard_arrow_right</i></a>
+    </div>
+    <hr>
+    {% endif %}
 </div>
 <p> {{ book.desc }} </p>
 <div class="center-align">
     <a href="{% url 'discussion' club.id meeting.id %}" class="btn">Disscussion <i class="material-icons right">keyboard_arrow_right</i></a>
 </div>
-
-
 <hr/>
 <h6 class="center-align">Upcoming Meeting</h6>
 <hr/>
@@ -56,7 +61,7 @@
 </div>
 
 
-<p class="vertical-align-right">View All<i class="material-icons">keyboard_arrow_right</i></p>
+<p class="vertical-align-right"><a href="{% url 'recommendations' club.id %}">View All</a><i class="material-icons">keyboard_arrow_right</i></p>
 
 <hr/>
 <h6> Invite code: {{ club.invite }}</h6>
