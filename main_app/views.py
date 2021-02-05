@@ -229,16 +229,16 @@ def get_ratings(meeting_id, user_id):
         print("User rating:", user_rating)
         ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
     else:
-        ratings = {'average': '', 'user':''}
+        ratings = {'average': '-----', 'user':'-----'}
     return ratings
 
 def int_to_star_string(rating):
-    stars = ''
-    for r in range (5):
-        if r < rating:
-            stars += '*'  
-        else:
-            stars+= '-'  
+    stars =''
+    for r in range (rating):
+        stars += '*'
+    for r in range(5-rating):    
+        stars += '-'
+        print("rating:", rating, stars)  
     return stars
 
 
