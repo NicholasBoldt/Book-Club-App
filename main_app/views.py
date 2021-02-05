@@ -172,6 +172,15 @@ class UserProfile(DetailView):
 @login_required
 def clubs_index(request):
     clubs = Club.objects.all().filter(members=request.user.id)
+    for club in clubs:
+        meeting = Meeting.objects.all().filter(club_id=club.id)
+        if len(meeting) < 1:
+            club.date = 'Unscheduled'
+        else:
+            print("Meeting:", meeting)
+            recent = meeting.last()
+            print("Recent", recent.date)
+            club.date = recent.date
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
 
@@ -181,7 +190,6 @@ def club(request, club_id):
     club = Club.objects.get(id=club_id)
     meeting = Meeting.objects.all().filter(club_id=club.id)
     recent = meeting.last()
-
     return redirect('meeting', club_id, recent.id)
 
 @login_required
@@ -238,7 +246,7 @@ def int_to_star_string(rating):
         stars += '*'
     for r in range(5-rating):    
         stars += '-'
-        print("rating:", rating, stars)  
+    print("rating:", rating, stars)  
     return stars
 
 

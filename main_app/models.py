@@ -38,8 +38,8 @@ class Meeting(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, blank=True, null=True)
 
-    def __str__(self):
-     return self.date
+    # def __str__(self):
+    #  return self.date
     
 
 class Discussion(models.Model):
