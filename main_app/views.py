@@ -43,7 +43,7 @@ def signup(request):
 
 
 @login_required    
-def select_book(request, club_id):
+def select_book(request, club_id, meeting_id):
     books = None
     if request.method == 'GET': # isbn search
         if 'isbn' in request.GET:
@@ -51,7 +51,7 @@ def select_book(request, club_id):
             books = search_isbn(isbn)
         elif 'search_title' in request.GET: # author/title search
             books = search_title_author(request.GET['search_title'], request.GET['search_author'])
-        return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id})
+        return render(request, 'selectbook.html', { 'books' : books, 'club_id': club_id, 'meeting_id':meeting_id})
     elif request.method == 'POST': # add selected title to database
         new_book = Book(
             title=request.POST['title'],
@@ -65,7 +65,7 @@ def select_book(request, club_id):
         books = None
         club = Club.objects.get(id=club_id)
         rec_list = club.book_set.all()
-        return redirect('/clubs/' + str(club_id) +'/recommendations')
+        return redirect(reverse('meeting', args=(club_id, meeting_id)))
     
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
@@ -170,6 +170,17 @@ def discussion_list(request, club_id, meeting_id):
 class RecList(ListView):
     model = Book
 
+def add_from_list(request, club_id, meeting_id):
+    if request.method == 'GET':
+        book_list = Book.objects.filter(club=club_id)
+        return render(request, 'main_app/book_list.html', {'book_list':book_list, 'club_id':club_id, 'meeting_id':meeting_id})
+    elif request.method == 'POST':
+        meeting = Meeting.objects.get(id=meeting_id)
+        meeting.book = Book.objects.get(id=request.POST['book'])
+        # print("Gonna add this to the meeting:")
+        meeting.save()
+        return redirect(reverse('meeting', args=(club_id, meeting_id)))
+
 class UserProfile(DetailView):
     model = User
     fields = ['username', 'first_name', 'last_name', 'email']
@@ -240,6 +251,8 @@ def get_ratings(meeting_id, user_id):
                 user_rating = 0
             print("User rating:", user_rating)
             ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
+        else:
+            ratings = {'average': '-----', 'user':'-----'}
     else:
         ratings = {'average': '-----', 'user':'-----'}
     return ratings
