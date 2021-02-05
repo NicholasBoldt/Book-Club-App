@@ -22,8 +22,6 @@
         {% else %}
                 <input type="submit" value="Vote for this book" class="btn">
         {% endif %}
-
     {% endfor%}
-
-
+    <div class="center-align"><a href="{% url 'selectbook' club_id meeting_id %}" class="btn">Add a book</a></div>
 {% endblock%}

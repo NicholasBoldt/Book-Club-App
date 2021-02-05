@@ -11,7 +11,6 @@ urlpatterns = [
     path('clubs/<int:club_id>/meeting', views.club, name='club'),
     path('clubs/<int:club_id>/join', views.join_club, name='joinclub'),
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/selectbook/', views.select_book, name='selectbook'),
-    path('clubs/<int:pk>/recommendations/', views.RecList.as_view(), name='recommendations'),
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/recommendations/', views.add_from_list, name='addrecc'),
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/', views.meeting, name='meeting'),
     path('clubs/<int:club_id>/meeting/<int:meeting_id>/rate/', views.rate, name='rate'),

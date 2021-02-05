@@ -19,7 +19,6 @@ def truncate(string): # Shortens a string to the end of the first sentence past 
             break
     return truncated
 
-# Create your views here.
 def home(request):
     form = AuthenticationForm
     return render(request, 'landing.html', {'form': form})
@@ -65,7 +64,7 @@ def select_book(request, club_id, meeting_id):
         books = None
         club = Club.objects.get(id=club_id)
         rec_list = club.book_set.all()
-        return redirect(reverse('meeting', args=(club_id, meeting_id)))
+        return redirect(reverse('addrecc', args=(club_id, meeting_id)))
     
 def search_isbn(isbn_list): # takes a list of ISBN numbers and returns a list of objects containing book, author, isbn, desc and image
     books = []
@@ -106,7 +105,6 @@ def search_title_author(search_title, search_author): # searches title and autho
                 isbn.append(num)
     if len(isbn) == 0:
         isbn = [0]            
-
     books = search_isbn(isbn)
     return books
 
@@ -131,10 +129,8 @@ def enter_code(request):
 
 def invite_lookup(request, invite_code):
     club = Club.objects.get(invite=invite_code)
-    print(invite_code, club.id)
     meeting = Meeting.objects.all().filter(club_id=club.id)
     recent = meeting.last()
-    print(recent)
     return render(request, 'invitelookup.html', {'club':club, 'book': recent.book})
 
 @login_required
@@ -149,23 +145,11 @@ def delete_comment(request, club_id, meeting_id):
     comment.delete()
     return redirect('/clubs/' + str(club_id) + '/meeting/' + str(meeting_id) + '/discussion')
 
-
-# class DiscussionList(ListView):
-#     model = Discussion
-
-#     def get_context_data(self, **kwargs):
-#         meeting = Meeting.objects.get(id=self.kwargs['meeting_id'])
-#         book = meeting.book
-#         context = super().get_context_data(**kwargs)
-#         context['book'] = book
-#         return context
-
 def discussion_list(request, club_id, meeting_id):
     discussion = Discussion.objects.filter(meeting=meeting_id)
-    print("Discussion", discussion)
     book = Meeting.objects.get(id=meeting_id).book
-    return render(request, 'main_app/discussion_list.html', {'discussion_list':discussion, 'book':book})
-
+    ratings = get_ratings(meeting_id, request.user.id)
+    return render(request, 'main_app/discussion_list.html', {'discussion_list':discussion, 'book':book, 'ratings':ratings, 'club_id':club_id, 'meeting_id':meeting_id})
 
 class RecList(ListView):
     model = Book
@@ -177,7 +161,6 @@ def add_from_list(request, club_id, meeting_id):
     elif request.method == 'POST':
         meeting = Meeting.objects.get(id=meeting_id)
         meeting.book = Book.objects.get(id=request.POST['book'])
-        # print("Gonna add this to the meeting:")
         meeting.save()
         return redirect(reverse('meeting', args=(club_id, meeting_id)))
 
@@ -193,9 +176,7 @@ def clubs_index(request):
         if len(meeting) < 1:
             club.date = 'Unscheduled'
         else:
-            print("Meeting:", meeting)
             recent = meeting.last()
-            print("Recent", recent.date)
             club.date = recent.date
     return render(request, 'myclubs/index.html', { 'clubs': clubs })
 
@@ -218,7 +199,6 @@ def meeting(request, club_id, meeting_id):
 def rate(request, club_id, meeting_id):
     book = Meeting.objects.get(id=meeting_id).book
     existing = Rating.objects.filter(book_id=book.id, user_id=request.user.id)
-    print("XX:", existing)
     if len(existing) > 0:
         new_rating = Rating.objects.get(book_id=book.id, user_id=request.user.id)
         new_rating.rating = request.POST['rating']
@@ -228,7 +208,6 @@ def rate(request, club_id, meeting_id):
             rating = request.POST['rating'],
             book_id = book.id
         )
-    print(new_rating.user_id, new_rating.rating, new_rating.book_id)
     new_rating.save()
     return redirect(reverse('meeting', args=(club_id, meeting_id)))
 
@@ -236,20 +215,16 @@ def get_ratings(meeting_id, user_id):
     meeting = Meeting.objects.get(id=meeting_id)
     book = meeting.book
     if book:
-        print("Book: ", meeting.book)
         ratings = book.rating_set.all()
-        print("Ratings:", ratings)
         if len(ratings) > 0:
             total = 0
             for r in ratings:
                 total += r.rating
             average_rating = int(total/len(ratings))
             if len(ratings.filter(user_id=user_id)) > 0:
-                print("User ratings:", ratings)
                 user_rating = ratings.filter(user_id=user_id)[0].rating
             else:
                 user_rating = 0
-            print("User rating:", user_rating)
             ratings = { 'average': int_to_star_string(average_rating), 'user' : int_to_star_string(user_rating)}
         else:
             ratings = {'average': '-----', 'user':'-----'}
@@ -263,9 +238,7 @@ def int_to_star_string(rating):
         stars += '*'
     for r in range(5-rating):    
         stars += '-'
-    print("rating:", rating, stars)  
     return stars
-
 
 def create_club(request):
     user = request.user.id
@@ -283,13 +256,9 @@ def create_club(request):
         new_club.members.add(user)
         new_club.save()
     
-        return redirect('home')
+        return redirect('index')
 
 class MeetingUpdate(UpdateView):
   model = Meeting
   fields = ['date', 'meeting_link', 'location', 'chapters']
   success_url = '/clubs/' 
-
-# class MeetingCreate(CreateView):
-#   model = Meeting
-#   success_url = '/clubs/' 

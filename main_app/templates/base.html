@@ -28,7 +28,7 @@
                             <li><a href="/meetings">Meetings</a></li>
                             <li><a href="/logout">Logout</a></li>
                         </ul> -->
-                        <div class="col s2"><i class="large material-icons">notifications_none</i></div>
+                        <div class="col s2"><a href="{% url 'index' %}"><i class="large material-icons">book</i></a></div>
                     </div>
                 </div>
             </nav>
@@ -39,8 +39,8 @@
             <div class="divider"></div>
             {% endif %}
             <li><a href="{% url 'index' %}">My Clubs</a></li>
-            <div class="divider"></div>
-            <li><a href="/Settings">Settings</a></li>
+            <!-- <div class="divider"></div>
+            <li><a href="/Settings">Settings</a></li> -->
             <div class="divider"></div>
             <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
